@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Recommendations — LOKAL AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo-box">LOKAL</div>
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="segmentation.html">SEGMENTATION</a>
+            <a href="recommendations.html" class="active">RECOMMENDATIONS</a>
+            <a href="tryon.html">VIRTUAL TRY-ON</a>
+        </div>
+    </nav>
+
+    <section>
+        <p class="tagline">PERSONALIZATION ENGINE</p>
+        <h1 style="font-size: 4rem; margin-bottom: 3rem;">AI <span style="color: var(--accent);">RECOMMENDATIONS</span></h1>
+        
+        <div class="model-container">
+            <div class="control-panel">
+                <div class="form-group">
+                    <label class="form-label">1. GENDER</label>
+                    <div class="toggle-group" data-group="gender">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'gender')">Men</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'gender')">Women</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'gender')">Unisex</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">2. PRIMARY STYLE</label>
+                    <div class="toggle-group" data-group="main-style">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'main-style')">Streetwear</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'main-style')">Luxury</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'main-style')">Minimalist</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'main-style')">Bohemian</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'main-style')">Sportswear</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'main-style')">Classic</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">3. COLOR PALETTE</label>
+                    <div class="toggle-group" data-group="colors">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'colors')">Neutrals</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'colors')">Earth Tones</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'colors')">Bold & Vibrant</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'colors')">Pastels</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">4. OCCASION</label>
+                    <div class="toggle-group" data-group="occasion">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'occasion')">Everyday</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'occasion')">Work/Office</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'occasion')">Evening/Social</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'occasion')">Sport/Active</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">5. BUDGET PER ITEM</label>
+                    <div class="toggle-group" data-group="item-budget">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'item-budget')">Under $50</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'item-budget')">$50-150</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'item-budget')">$150-400</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'item-budget')">$400+</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="runRecommendations()">GENERATE PICKS →</button>
+            </div>
+
+            <div class="result-panel" id="recommendations-result">
+                <span class="result-badge">PERSONALIZED PICKS</span>
+                <h2 class="result-title">CURATED FOR YOU</h2>
+                
+                <div class="rec-grid" id="product-list">
+                    <!-- Products will be injected here -->
+                </div>
+
+                <h4 style="margin-bottom: 1rem;">WHY THESE PICKS?</h4>
+                <p id="reasoning-text" style="color: var(--muted); margin-bottom: 2rem;">Based on your affinity for luxury earth tones, we've selected items that emphasize craftsmanship and timeless silhouettes.</p>
+
+                <h4 style="margin-bottom: 1rem;">STYLE DNA</h4>
+                <div class="tag-cloud" id="dna-tags">
+                    <span class="tag">#MINIMALISM</span>
+                    <span class="tag">#PREMIUM</span>
+                </div>
+
+                <button class="btn btn-outline" style="width: 100%; margin-top: 3rem;" onclick="resetRecommendations()">TRY DIFFERENT PROFILE</button>
+            </div>
+        </div>
+
+        <div style="margin-top: 6rem; padding: 4rem; background: var(--dark); border-radius: 20px;">
+            <h2 style="margin-bottom: 2rem; font-size: 2.5rem;">HOW THE ENGINE WORKS</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;">
+                <div>
+                    <h4 style="color: var(--accent); margin-bottom: 1rem;">COLLABORATIVE FILTERING</h4>
+                    <p style="font-size: 0.9rem; color: var(--muted);">Analyzes similarities between you and thousands of other users to find shared preferences.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--accent); margin-bottom: 1rem;">CONTENT-BASED FILTERING</h4>
+                    <p style="font-size: 0.9rem; color: var(--muted);">Maps garment attributes (fabric, cut, drape) against your preferred style DNA.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--accent); margin-bottom: 1rem;">RANKING ENGINE</h4>
+                    <p style="font-size: 0.9rem; color: var(--muted);">Scores and sorts the top 10,000 matches in under 12ms to deliver immediate results.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="loader-overlay" id="loader">
+        <div class="spinner"></div>
+        <p class="display-font">MAPPING STYLE VECTORS...</p>
+    </div>
+
+    <footer>
+        <span class="footer-logo">LOKAL</span>
+        <div class="footer-info">
+            <span style="margin-right: 2rem;">© 2026 LOKAL AI FASHION</span>
+            <span>BUILT FOR VERCEL STATIC EDGE</span>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Segmentation — LOKAL AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo-box">LOKAL</div>
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="segmentation.html" class="active">SEGMENTATION</a>
+            <a href="recommendations.html">RECOMMENDATIONS</a>
+            <a href="tryon.html">VIRTUAL TRY-ON</a>
+        </div>
+    </nav>
+
+    <section>
+        <p class="tagline">INTERNAL ML TOOL</p>
+        <h1 style="font-size: 4rem; margin-bottom: 3rem;">CUSTOMER <span style="color: var(--accent);">SEGMENTATION</span></h1>
+        
+        <div class="model-container">
+            <div class="control-panel">
+                <div class="form-group">
+                    <label class="form-label">1. AGE RANGE</label>
+                    <div class="toggle-group" data-group="age">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'age')">18-24</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'age')">25-34</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'age')">35-44</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'age')">45+</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">2. STYLE PREFERENCE</label>
+                    <div class="toggle-group" data-group="style">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'style')">Streetwear</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'style')">Luxury</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'style')">Casual</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'style')">Formal</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'style')">Sustainable</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">3. MONTHLY BUDGET</label>
+                    <div class="toggle-group" data-group="budget">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'budget')">Under $100</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'budget')">$100-300</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'budget')">$300-600</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'budget')">$600+</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">4. PURCHASE FREQUENCY</label>
+                    <div class="toggle-group" data-group="freq">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'freq')">Rarely</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'freq')">Monthly</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'freq')">Weekly</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'freq')">Daily/Impulse</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">5. SHOPPING CHANNEL</label>
+                    <div class="toggle-group" data-group="channel">
+                        <button class="toggle-btn active" onclick="setToggle(this, 'channel')">Online Only</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'channel')">In-Store Only</button>
+                        <button class="toggle-btn" onclick="setToggle(this, 'channel')">Both</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="runSegmentation()">RUN SEGMENTATION →</button>
+            </div>
+
+            <div class="result-panel" id="segmentation-result">
+                <span class="result-badge">SEGMENT DETECTED</span>
+                <h2 class="result-title" id="cluster-name">THE TRENDSETTER</h2>
+                <p class="result-desc" id="cluster-desc">High affinity for limited releases and social media driven aesthetics.</p>
+                
+                <div class="result-metrics">
+                    <div class="metric-card">
+                        <span class="metric-val" id="metric-size">24%</span>
+                        <span class="metric-lbl">Cluster Size</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-val" id="metric-ltv">$1,240</span>
+                        <span class="metric-lbl">Avg LTV</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-val" id="metric-risk">Low</span>
+                        <span class="metric-lbl">Churn Risk</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom: 1rem;">MARKETING STRATEGY</h4>
+                <ul class="result-list" id="strategy-list">
+                    <li>Launch exclusive influencer-led drops.</li>
+                    <li>Utilize hyper-fast TikTok content.</li>
+                    <li>Incentivize UGC shared on social threads.</li>
+                </ul>
+
+                <h4 style="margin-bottom: 1rem;">RECOMMENDED CHANNELS</h4>
+                <div class="tag-cloud" id="channel-tags">
+                    <span class="tag">INSTAGRAM</span>
+                    <span class="tag">TIKTOK</span>
+                </div>
+
+                <button class="btn btn-outline" style="width: 100%; margin-top: 3rem;" onclick="resetSegmentation()">ANALYZE ANOTHER</button>
+            </div>
+        </div>
+
+        <div class="cluster-cards">
+            <h2 style="margin-bottom: 2rem;">CLUSTER OVERVIEW</h2>
+            <div class="cluster-grid">
+                <div class="cluster-item">
+                    <h4>A — TRENDSETTER</h4>
+                    <p style="font-size: 0.85rem; color: var(--muted);">Young, streetwear-focused, high frequency online buyers.</p>
+                </div>
+                <div class="cluster-item">
+                    <h4>B — LUXURY SEEKER</h4>
+                    <p style="font-size: 0.85rem; color: var(--muted);">High budget, quality-focused, values exclusivity and heritage.</p>
+                </div>
+                <div class="cluster-item">
+                    <h4>C — CONSCIOUS BUYER</h4>
+                    <p style="font-size: 0.85rem; color: var(--muted);">Sustainable style, ethical focus, loyal to transparent brands.</p>
+                </div>
+                <div class="cluster-item">
+                    <h4>D — CASUAL BROWSER</h4>
+                    <p style="font-size: 0.85rem; color: var(--muted);">Moderate budget, seasonal buyers, responds well to promos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="loader-overlay" id="loader">
+        <div class="spinner"></div>
+        <p class="display-font">PROCESSING STYLE VECTORS...</p>
+    </div>
+
+    <footer>
+        <span class="footer-logo">LOKAL</span>
+        <div class="footer-info">
+            <span style="margin-right: 2rem;">© 2026 LOKAL AI FASHION</span>
+            <span>BUILT FOR VERCEL STATIC EDGE</span>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>

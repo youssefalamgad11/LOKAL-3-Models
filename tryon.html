@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Try-On — LOKAL AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo-box">LOKAL</div>
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="segmentation.html">SEGMENTATION</a>
+            <a href="recommendations.html">RECOMMENDATIONS</a>
+            <a href="tryon.html" class="active">VIRTUAL TRY-ON</a>
+        </div>
+    </nav>
+
+    <section>
+        <p class="tagline">VISION AI MODEL</p>
+        <h1 style="font-size: 4rem; margin-bottom: 3rem;">VIRTUAL <span style="color: var(--accent);">TRY-ON</span></h1>
+        
+        <div class="api-key-input-container">
+            <input type="password" id="api-key-input" placeholder="Enter Gemini API Key to activate AI">
+            <p style="font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem;">Your key is used locally and never stored. Empty uses demo mode.</p>
+        </div>
+
+        <div class="model-container">
+            <div class="control-panel">
+                <div class="form-group">
+                    <label class="form-label">STEP 1 — UPLOAD PHOTO</label>
+                    <div class="upload-zone" id="drop-zone">
+                        <img id="image-preview" src="" alt="Preview">
+                        <div id="upload-placeholder" style="text-align: center;">
+                            <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">📸</span>
+                            <p style="font-family: var(--font-display);">DRAG & DROP OR CLICK TO UPLOAD</p>
+                            <p style="font-size: 0.75rem; color: var(--muted);">JPG, PNG (MAX 5MB)</p>
+                        </div>
+                        <input type="file" id="file-input" hidden accept="image/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">STEP 2 — CHOOSE GARMENT</label>
+                    <div class="garment-grid" id="garment-list">
+                        <!-- Garments injected by JS -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">STEP 3 — STYLE PREFERENCES</label>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase;">Fit Preference</p>
+                        <div class="toggle-group" data-group="fit">
+                            <button class="toggle-btn active" onclick="setToggle(this, 'fit')">Oversized</button>
+                            <button class="toggle-btn" onclick="setToggle(this, 'fit')">True to Size</button>
+                            <button class="toggle-btn" onclick="setToggle(this, 'fit')">Fitted</button>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase;">Occasion</p>
+                        <div class="toggle-group" data-group="tryon-occasion">
+                            <button class="toggle-btn active" onclick="setToggle(this, 'tryon-occasion')">Casual</button>
+                            <button class="toggle-btn" onclick="setToggle(this, 'tryon-occasion')">Smart Casual</button>
+                            <button class="toggle-btn" onclick="setToggle(this, 'tryon-occasion')">Formal</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="run-btn" onclick="runTryOn()">ANALYZE MY STYLE →</button>
+            </div>
+
+            <div class="result-panel" id="tryon-result">
+                <div class="engine-badge">New Engine</div>
+                <span class="result-badge">AI STYLE ANALYSIS</span>
+                <h2 class="result-title">YOUR LOOK: <span id="res-item-name" style="color: var(--accent);">BLAZER</span></h2>
+                
+                <div style="margin-bottom: 2.5rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--accent);">FIT ANALYSIS</h4>
+                    <p id="res-fit" style="color: var(--muted);">Analyzing your body type against internal silhouette maps...</p>
+                    <p id="res-styling" style="color: var(--text); margin-top: 1rem; font-weight: 500;">Styling notes will appear here.</p>
+                </div>
+
+                <div style="margin-bottom: 2.5rem;">
+                    <h4 style="margin-bottom: 1.5rem;">STYLE SCORES</h4>
+                    <div class="score-row">
+                        <div class="score-label"><span>Style Match</span><span id="score-match-val">0%</span></div>
+                        <div class="score-bar-bg"><div class="score-bar-fill" id="score-match-bar"></div></div>
+                    </div>
+                    <div class="score-row">
+                        <div class="score-label"><span>Versatility</span><span id="score-vers-val">0%</span></div>
+                        <div class="score-bar-bg"><div class="score-bar-fill" id="score-vers-bar"></div></div>
+                    </div>
+                    <div class="score-row">
+                        <div class="score-label"><span>Trend Alignment</span><span id="score-trend-val">0%</span></div>
+                        <div class="score-bar-bg"><div class="score-bar-fill" id="score-trend-bar"></div></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 2.5rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--accent);">COMPLETE THE LOOK</h4>
+                    <div id="res-complete" class="tag-cloud">
+                        <!-- Suggestions here -->
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 3rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--accent);">STYLING TIPS</h4>
+                    <ul class="result-list" id="res-tips">
+                        <!-- Tips here -->
+                    </ul>
+                </div>
+
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-outline" style="flex: 1;">SHARE YOUR LOOK</button>
+                    <button class="btn btn-primary" style="flex: 1;" onclick="resetTryOn()">TRY ANOTHER ITEM →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="loader-overlay" id="loader">
+        <div class="spinner"></div>
+        <p class="display-font" id="loader-text">CONSULTING AI STYLIST...</p>
+    </div>
+
+    <script src="tryon.js"></script>
+    <script>
+        function setToggle(btn, group) {
+            const groupEl = btn.closest('.toggle-group');
+            groupEl.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    </script>
+    <footer>
+        <span class="footer-logo">LOKAL</span>
+        <div class="footer-info">
+            <span style="margin-right: 2rem;">© 2026 LOKAL AI FASHION</span>
+            <span>BUILT FOR VERCEL STATIC EDGE</span>
+        </div>
+    </footer>
+</body>
+</html>
